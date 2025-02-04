@@ -21,56 +21,17 @@ if($_SERVER['REQUEST_METHOD'] == "POST") {
                 header("location: ../../src/pages/cadastro/index.php?error=true");
             }
             break;
-        
-        case "editar_foto":
-            if(isset($_POST['remover_foto']) && $_POST['remover_foto'] == '1'){
-                $file_path_db = null;
-            } else{
-                if(!isset($_FILES["foto_perfil"])) {
-                    return header("Location: ../../src/pages/perfil/perfil.php?erro=foto");
-            }
-
-            if($_FILES["foto_perfil"]["error"] != 0) {
-                return header("Location: ../../src/pages/perfil/perfil.php?erro=upload_foto");
-            }
-
-            $dir = __DIR__ . "/../../public/uploads/";
-            $file_path = $dir . basename($_FILES["foto_perfil"]["name"]);
-            $res_upload = move_uploaded_file($_FILES["foto_perfil"]["tmp_name"], $file_path);
-
-            if(!$res_upload) {
-                return header("Location: ../../src/pages/perfil/perfil.php?erro=upload_foto");
-            }
-            
-            $file_path_db = explode("htdocs\\", $file_path)[1];
-            
-        }
-            $resultado = $userController->AtualizarFoto($_POST["id"], $file_path_db);
-
-            if(!$resultado) {
-                return header("Location: ../../src/pages/perfil/perfil.php?erro=erro_inesperado");
-            }
-
-            $_SESSION['foto_perfil'] = $file_path_db;
-
-            header("Location: ../../src/pages/perfil/perfil.php?sucesso");
-
-            break;
 
         case "editar":
             if(!(empty($_POST['nome']) || empty($_POST['email']) || empty($_POST['senha']) || empty($_POST['telefone']))){
                 $resultado = $userController->AtualizarUsuario($_POST["id"], $_POST["nome"],$_POST["email"],$_POST["senha"],$_POST["telefone"]); ##colocar $foto_perfil
                 if($resultado){
-                    header("location: ../../src/pages/perfil/perfil.php");
+                    header("location: ../../src/pages/perfil/perfil.php?sucesso");
                 }else{
-                    echo "Erro ao atualizar o usuario";
-                    exit();
-                    // header("location: ../../src/pages/perfil/perfil.php?error=true");
+                    header("location: ../../src/pages/perfil/perfil.php?error=true");
                 }
             }else{
-                echo "Campos obrigatorios estao faltando.";
-                exit();
-                // header("location: ../../src/pages/perfil/perfil.php?error=true");
+                 header("location: ../../src/pages/perfil/perfil.php?error=true");
             }
             break;
         

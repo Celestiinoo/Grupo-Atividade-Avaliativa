@@ -1,23 +1,25 @@
 let slideIndex = 0;
-MostrarImagens();
+MostrarImagem();
 
-function MostrarImagens() {
-    let slides = document.querySelectorAll('.imagens img');
-    let dots = document.querySelectorAll('.dot');
-    slides.forEach((slide, index) => {
-        slide.style.display = 'none';
+function MostrarImagem() {
+    const slides = document.querySelectorAll('.imagens img');
+    const dots = document.querySelectorAll('.dot');
+
+    slides.forEach(slide => {
+        slide.style.opacity = '0';
+        slide.classList.remove('active');
     });
-    dots.forEach((dot, index) => {
-        dot.className = dot.className.replace(' active', '');
-    });
+    dots.forEach(dot => dot.classList.remove('active'));
+    
     slideIndex++;
-    if (slideIndex > slides.length) { slideIndex = 1 }
-    slides[slideIndex - 1].style.display = 'block';
-    dots[slideIndex - 1].className += ' active';
-    setTimeout(MostrarImagens, 3000);
+    if (slideIndex > slides.length) slideIndex = 1;
+    slides[slideIndex - 1].style.opacity = '1';
+    slides[slideIndex - 1].classList.add('active');
+    dots[slideIndex - 1].classList.add('active');
+    setTimeout(MostrarImagem, 5000);
 }
 
-function currentSlide(n) {
+function ImagemAtual(n) {
     slideIndex = n - 1;
-    MostrarImagens();
-}
+    MostrarImagem();
+} 
